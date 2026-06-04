@@ -1,7 +1,7 @@
 /* ============================================================
    StreamBox — auth.js
    Authentication: Ndeye Diakhou Seck
-
+   
    This file handles all Supabase authentication.
    script.js calls these functions — do NOT touch script.js
    for auth logic, keep everything here.
@@ -13,8 +13,8 @@
 // ⚠️ NEVER commit real keys to GitHub. Use placeholders here and
 //    fill them in locally / during the demo.
 
-const SUPABASE_URL = "https://zebnqkacqyxeorpogzdv.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplYm5xa2FjcXl4ZW9ycG9nemR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1OTQ3MzksImV4cCI6MjA5NjE3MDczOX0.0KQIo-yRpTDvYJGTeFcsxj4Im0EzgFdblq6ip3-QehI";
+const SUPABASE_URL = "YOUR_SUPABASE_URL";
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
 
 // Initialize the Supabase client (the CDN script is loaded in index.html)
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -30,11 +30,9 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
  * @returns {Promise<{ data, error }>}
  */
 async function signUpUser(email, password) {
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password
-  });
-
+  // TODO (Ndeye): implement sign up
+  // Hint: use supabase.auth.signUp({ email, password })
+  const { data, error } = await supabase.auth.signUp({ email, password });
   return { data, error };
 }
 
@@ -48,11 +46,9 @@ async function signUpUser(email, password) {
  * @returns {Promise<{ data, error }>}
  */
 async function signInUser(email, password) {
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password
-  });
-
+  // TODO (Ndeye): implement sign in
+  // Hint: use supabase.auth.signInWithPassword({ email, password })
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
   return { data, error };
 }
 
@@ -64,35 +60,36 @@ async function signInUser(email, password) {
  * @returns {Promise<{ error }>}
  */
 async function signOutUser() {
+  // TODO (Ndeye): implement sign out
+  // Hint: use supabase.auth.signOut()
   const { error } = await supabase.auth.signOut();
-
   return { error };
 }
 
 
-// ---- Get Current User ----
+// ---- Get current session ----
 /**
- * Returns the currently logged-in user object, or null if not logged in.
- * Used by script.js on page load to check if a user is already signed in.
+ * Returns the current session (or null if not logged in).
+ * Used by script.js on page load to check if user is already signed in.
  *
- * @returns {Promise<User | null>}
+ * @returns {Promise<{ session }>}
  */
-async function getCurrentUser() {
-  const { data: { user } } = await supabase.auth.getUser();
-  return user;
+async function getCurrentSession() {
+  const { data } = await supabase.auth.getSession();
+  return data.session;
 }
 
 
-// ---- Auth State Listener ----
+// ---- Auth state listener ----
 /**
- * Calls callback(event, session) whenever the auth state changes
+ * Calls onAuthChange(event, session) whenever the auth state changes
  * (sign in, sign out, token refresh, etc.)
  * script.js uses this to toggle between auth UI and app UI.
  *
- * @param {Function} callback
+ * @param {Function} onAuthChange
  */
-function onAuthChange(callback) {
+function listenAuthChanges(onAuthChange) {
   supabase.auth.onAuthStateChange((event, session) => {
-    callback(event, session);
+    onAuthChange(event, session);
   });
 }
