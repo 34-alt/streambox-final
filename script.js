@@ -1,25 +1,13 @@
-import {
-  fetchPopularMovies,
-  searchMovies,
-  fetchMovieDetails,
-  getPosterUrl
-} from "./tmdb.js";
-
-import {
-  signUpUser,
-  signInUser,
-  signOutUser,
-  getCurrentSession,
-  listenAuthChanges
-} from "./auth.js";
-
 /* ============================================================
    StreamBox — script.js
    Main orchestrator: Khadija Mbodji
-   
+
    This file wires auth (auth.js) and TMDB (tmdb.js) to the UI.
    It does NOT contain API logic — it only calls functions from
    auth.js and tmdb.js.
+
+   NOTE: All scripts load as plain <script> tags in index.html.
+   Do NOT add import/export statements here.
    ============================================================ */
 
 
@@ -41,56 +29,43 @@ const signOutBtn    = document.getElementById("signOutBtn");
 const userEmailEl   = document.getElementById("userEmail");
 
 // Movies
-const movieGrid     = document.getElementById("movieGrid");
-const searchInput   = document.getElementById("search");
-const loadingState  = document.getElementById("loadingState");
-const errorState    = document.getElementById("errorState");
-const errorMessage  = document.getElementById("errorMessage");
-const emptyState    = document.getElementById("emptyState");
-const retryBtn      = document.getElementById("retryBtn");
-const clearSearchBtn= document.getElementById("clearSearchBtn");
+const movieGrid      = document.getElementById("movieGrid");
+const searchInput    = document.getElementById("search");
+const loadingState   = document.getElementById("loadingState");
+const errorState     = document.getElementById("errorState");
+const errorMessage   = document.getElementById("errorMessage");
+const emptyState     = document.getElementById("emptyState");
+const retryBtn       = document.getElementById("retryBtn");
+const clearSearchBtn = document.getElementById("clearSearchBtn");
 
 // Modal
-const movieModal    = document.getElementById("movieModal");
-const closeModal    = document.getElementById("closeModal");
-const modalPoster   = document.getElementById("modalPoster");
-const modalPosterImg= document.getElementById("modalPosterImg");
-const modalGenre    = document.getElementById("modalGenre");
-const modalTitle    = document.getElementById("modalTitle");
+const movieModal       = document.getElementById("movieModal");
+const closeModal       = document.getElementById("closeModal");
+const modalPosterImg   = document.getElementById("modalPosterImg");
+const modalGenre       = document.getElementById("modalGenre");
+const modalTitle       = document.getElementById("modalTitle");
 const modalDescription = document.getElementById("modalDescription");
-const modalYear     = document.getElementById("modalYear");
-const modalRating   = document.getElementById("modalRating");
+const modalYear        = document.getElementById("modalYear");
+const modalRating      = document.getElementById("modalRating");
 
 // Header nav
-const menuBtn       = document.getElementById("menuBtn");
-const navLinks      = document.getElementById("navLinks");
+const menuBtn   = document.getElementById("menuBtn");
+const navLinks  = document.getElementById("navLinks");
 
 
 // ---- UI State Helpers ----
 
-/**
- * Show the auth forms (user not logged in).
- */
 function showAuth() {
   authWrapper.classList.remove("hidden");
   appWrapper.classList.add("hidden");
 }
 
-/**
- * Show the movie app (user is logged in).
- * @param {string} email - the logged-in user's email
- */
 function showApp(email) {
   authWrapper.classList.add("hidden");
   appWrapper.classList.remove("hidden");
   userEmailEl.textContent = email || "";
 }
 
-/**
- * Switch between Sign In and Sign Up tabs.
- * Called from onclick in index.html.
- * @param {"signin"|"signup"} tab
- */
 function showTab(tab) {
   const tabSignIn = document.getElementById("tabSignIn");
   const tabSignUp = document.getElementById("tabSignUp");
@@ -100,14 +75,13 @@ function showTab(tab) {
     signUpForm.classList.add("hidden");
     tabSignIn.classList.add("active");
     tabSignUp.classList.remove("active");
-    clearAuthMessages();
   } else {
     signInForm.classList.add("hidden");
     signUpForm.classList.remove("hidden");
     tabSignIn.classList.remove("active");
     tabSignUp.classList.add("active");
-    clearAuthMessages();
   }
+  clearAuthMessages();
 }
 
 function clearAuthMessages() {
@@ -118,13 +92,13 @@ function clearAuthMessages() {
 
 function setSigninLoading(loading) {
   signinBtn.disabled = loading;
-  signinBtn.querySelector(".btn-text").hidden   = loading;
+  signinBtn.querySelector(".btn-text").hidden   =  loading;
   signinBtn.querySelector(".btn-loader").hidden = !loading;
 }
 
 function setSignupLoading(loading) {
   signupBtn.disabled = loading;
-  signupBtn.querySelector(".btn-text").hidden   = loading;
+  signupBtn.querySelector(".btn-text").hidden   =  loading;
   signupBtn.querySelector(".btn-loader").hidden = !loading;
 }
 
@@ -160,10 +134,6 @@ function hideStates() {
 
 // ---- Render Movies ----
 
-/**
- * Builds the movie card grid from an array of TMDB movie objects.
- * @param {Array} movies
- */
 function renderMovies(movies) {
   hideStates();
   movieGrid.innerHTML = "";
@@ -179,7 +149,7 @@ function renderMovies(movies) {
     card.dataset.movieId = movie.id;
 
     const posterUrl = getPosterUrl(movie.poster_path);
-    const year = movie.release_date ? movie.release_date.split("-")[0] : "N/A";
+    const year   = movie.release_date ? movie.release_date.split("-")[0] : "N/A";
     const rating = movie.vote_average ? movie.vote_average.toFixed(1) : "N/A";
 
     card.innerHTML = `
@@ -204,7 +174,7 @@ function renderMovies(movies) {
 }
 
 
-// ---- Load movies ----
+// ---- Load Movies ----
 
 async function loadPopularMovies() {
   showLoading();
@@ -240,28 +210,26 @@ searchInput.addEventListener("input", () => {
       console.error("Search error:", err);
       showError("Search failed. Please check your connection.");
     }
-  }, 400); // 400ms debounce
+  }, 400);
 });
 
 
 // ---- Movie Detail Modal ----
 
 async function openMovieModal(movieId) {
-  // Reset modal state
   modalPosterImg.classList.add("hidden");
   modalPosterImg.src = "";
-  modalGenre.textContent = "";
-  modalTitle.textContent = "";
+  modalGenre.textContent       = "";
+  modalTitle.textContent       = "";
   modalDescription.textContent = "Loading…";
-  modalYear.textContent = "";
-  modalRating.textContent = "";
+  modalYear.textContent        = "";
+  modalRating.textContent      = "";
 
   movieModal.showModal();
 
   try {
     const movie = await fetchMovieDetails(movieId);
 
-    // Poster
     const posterUrl = getPosterUrl(movie.poster_path);
     if (posterUrl) {
       modalPosterImg.src = posterUrl;
@@ -269,7 +237,6 @@ async function openMovieModal(movieId) {
       modalPosterImg.classList.remove("hidden");
     }
 
-    // Genres (array of { id, name })
     const genres = movie.genres && movie.genres.length > 0
       ? movie.genres.map(g => g.name).join(", ")
       : "";
@@ -277,12 +244,9 @@ async function openMovieModal(movieId) {
     modalGenre.textContent       = genres;
     modalTitle.textContent       = movie.title;
     modalDescription.textContent = movie.overview || "No description available.";
-    modalYear.textContent        = movie.release_date
-      ? `📅 ${movie.release_date}`
-      : "";
+    modalYear.textContent        = movie.release_date ? `📅 ${movie.release_date}` : "";
     modalRating.textContent      = movie.vote_average
-      ? `★ ${movie.vote_average.toFixed(1)} / 10`
-      : "";
+      ? `★ ${movie.vote_average.toFixed(1)} / 10` : "";
 
   } catch (err) {
     console.error("Error loading movie details:", err);
@@ -290,13 +254,12 @@ async function openMovieModal(movieId) {
   }
 }
 
-// Close modal
 closeModal.addEventListener("click", () => movieModal.close());
 
 movieModal.addEventListener("click", (e) => {
   const box = movieModal.getBoundingClientRect();
   const outside = e.clientX < box.left || e.clientX > box.right
-    || e.clientY < box.top || e.clientY > box.bottom;
+    || e.clientY < box.top  || e.clientY > box.bottom;
   if (outside) movieModal.close();
 });
 
@@ -305,10 +268,8 @@ movieModal.addEventListener("click", (e) => {
 
 signOutBtn.addEventListener("click", async () => {
   const { error } = await signOutUser();
-  if (error) {
-    console.error("Sign out error:", error.message);
-  }
-  // Auth state change listener will call showAuth() automatically
+  if (error) console.error("Sign out error:", error.message);
+  // onAuthChange listener will call showAuth() automatically
 });
 
 
@@ -322,22 +283,23 @@ signInForm.addEventListener("submit", async (e) => {
   const email    = document.getElementById("signinEmail").value.trim();
   const password = document.getElementById("signinPassword").value;
 
-  // Validation
-  if (!email || !password) {
-    signinError.textContent = "Please fill in all fields.";
+  if (!email) {
+    signinError.textContent = "Please enter your email address.";
+    return;
+  }
+  if (!password) {
+    signinError.textContent = "Please enter your password.";
     return;
   }
 
   setSigninLoading(true);
-
   const { error } = await signInUser(email, password);
-
   setSigninLoading(false);
 
   if (error) {
-    signinError.textContent = error.message || "Sign in failed. Please try again.";
+    signinError.textContent = "Incorrect email or password. Please try again.";
   }
-  // On success, the auth state listener triggers showApp()
+  // On success, onAuthChange triggers showApp()
 });
 
 
@@ -351,44 +313,41 @@ signUpForm.addEventListener("submit", async (e) => {
   const password = document.getElementById("signupPassword").value;
   const confirm  = document.getElementById("signupConfirm").value;
 
-  // Validation
-  if (!email || !password || !confirm) {
-    signupError.textContent = "Please fill in all fields.";
+  if (!email) {
+    signupError.textContent = "Please enter your email address.";
     return;
   }
-
+  if (!password) {
+    signupError.textContent = "Please enter a password.";
+    return;
+  }
   if (password.length < 6) {
     signupError.textContent = "Password must be at least 6 characters.";
     return;
   }
-
   if (password !== confirm) {
     signupError.textContent = "Passwords do not match.";
     return;
   }
 
   setSignupLoading(true);
-
   const { error } = await signUpUser(email, password);
-
   setSignupLoading(false);
 
   if (error) {
     signupError.textContent = error.message || "Sign up failed. Please try again.";
   } else {
-    signupSuccess.textContent = "Account created! Check your email to confirm your account.";
+    signupSuccess.textContent =
+      "Account created! Check your email to confirm your account before signing in.";
     signUpForm.reset();
   }
 });
 
 
-// ---- Auth State Management ----
+// ---- Auth State Listener ----
+// Runs on page load and on every sign-in / sign-out event.
 
-/**
- * Called on page load and whenever auth state changes.
- * Toggles between auth UI and app UI.
- */
-listenAuthChanges((event, session) => {
+onAuthChange((event, session) => {
   if (session && session.user) {
     showApp(session.user.email);
     loadPopularMovies();
@@ -398,43 +357,23 @@ listenAuthChanges((event, session) => {
 });
 
 
-// ---- Header: hamburger menu ----
+// ---- Header hamburger menu ----
 
-menuBtn.addEventListener("click", () => {
-  navLinks.classList.toggle("show");
-});
-
-navLinks.addEventListener("click", () => {
-  navLinks.classList.remove("show");
-});
+menuBtn.addEventListener("click", () => navLinks.classList.toggle("show"));
+navLinks.addEventListener("click", () => navLinks.classList.remove("show"));
 
 
 // ---- Utility buttons ----
 
 retryBtn.addEventListener("click", () => {
   const query = searchInput.value.trim();
-  if (query) {
-    searchInput.dispatchEvent(new Event("input"));
-  } else {
-    loadPopularMovies();
-  }
+  if (query) searchInput.dispatchEvent(new Event("input"));
+  else loadPopularMovies();
 });
 
 clearSearchBtn.addEventListener("click", () => {
   searchInput.value = "";
   loadPopularMovies();
 });
-
-
-// ---- Page load: check existing session ----
-(async () => {
-  const session = await getCurrentSession();
-  if (session && session.user) {
-    showApp(session.user.email);
-    loadPopularMovies();
-  } else {
-    showAuth();
-  }
-})();
 
 console.log("StreamBox loaded ✓");
