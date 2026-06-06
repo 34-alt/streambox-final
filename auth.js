@@ -70,29 +70,29 @@ async function signOutUser() {
 }
 
 
-// ---- Get Current User ----
+// ---- Get current session ----
 /**
- * Returns the currently logged-in user object, or null if not logged in.
- * Used by script.js on page load to check if a user is already signed in.
+ * Returns the current session (or null if not logged in).
+ * Used by script.js on page load to check if user is already signed in.
  *
- * @returns {Promise<User | null>}
+ * @returns {Promise<{ session }>}
  */
-async function getCurrentUser() {
-  const { data: { user } } = await supabase.auth.getUser();
-  return user;
+async function getCurrentSession() {
+  const { data } = await supabase.auth.getSession();
+  return data.session;
 }
 
 
-// ---- Auth State Listener ----
+// ---- Auth state listener ----
 /**
- * Calls callback(event, session) whenever the auth state changes
+ * Calls onAuthChange(event, session) whenever the auth state changes
  * (sign in, sign out, token refresh, etc.)
  * script.js uses this to toggle between auth UI and app UI.
  *
- * @param {Function} callback
+ * @param {Function} onAuthChange
  */
-function onAuthChange(callback) {
+function listenAuthChanges(onAuthChange) {
   supabase.auth.onAuthStateChange((event, session) => {
-    callback(event, session);
+    onAuthChange(event, session);
   });
 }
