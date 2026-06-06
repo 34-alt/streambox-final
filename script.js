@@ -1,3 +1,18 @@
+import {
+  fetchPopularMovies,
+  searchMovies,
+  fetchMovieDetails,
+  getPosterUrl
+} from "./tmdb.js";
+
+import {
+  signUpUser,
+  signInUser,
+  signOutUser,
+  getCurrentSession,
+  listenAuthChanges
+} from "./auth.js";
+
 /* ============================================================
    StreamBox — script.js
    Main orchestrator: Khadija Mbodji
