@@ -7,148 +7,99 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-
+ 
   <!-- ========================================================
        AUTH SECTION — shown when user is NOT logged in
-       Managed by: script.js (toggles visibility)
-       Logic by: Ndeye (auth.js)
   ======================================================== -->
   <div class="auth-wrapper" id="authWrapper">
-
+ 
     <div class="auth-container">
-
-      <!-- Logo -->
+ 
       <a href="#" class="auth-logo">StreamBox</a>
       <p class="auth-tagline">Your movies. Your world.</p>
-
-      <!-- Tab switcher -->
+ 
       <div class="auth-tabs">
         <button class="auth-tab active" id="tabSignIn" onclick="showTab('signin')">Sign In</button>
         <button class="auth-tab" id="tabSignUp" onclick="showTab('signup')">Sign Up</button>
       </div>
-
+ 
       <!-- SIGN IN FORM -->
       <form class="auth-form" id="signInForm" novalidate>
         <div class="form-group">
           <label for="signinEmail">Email</label>
-          <input
-            type="email"
-            id="signinEmail"
-            placeholder="you@example.com"
-            autocomplete="email"
-            required
-          />
+          <input type="email" id="signinEmail" placeholder="you@example.com"
+            autocomplete="email" required />
         </div>
-
         <div class="form-group">
           <label for="signinPassword">Password</label>
-          <input
-            type="password"
-            id="signinPassword"
-            placeholder="Your password"
-            autocomplete="current-password"
-            required
-          />
+          <input type="password" id="signinPassword" placeholder="Your password"
+            autocomplete="current-password" required />
         </div>
-
-        <!-- Error message area -->
         <p class="form-error" id="signinError" role="alert"></p>
-
         <button type="submit" class="btn-auth" id="signinBtn">
           <span class="btn-text">Sign In</span>
           <span class="btn-loader" hidden>Signing in…</span>
         </button>
-
         <p class="form-switch">
           No account?
           <button type="button" class="link-btn" onclick="showTab('signup')">Create one</button>
         </p>
       </form>
-
+ 
       <!-- SIGN UP FORM -->
       <form class="auth-form hidden" id="signUpForm" novalidate>
         <div class="form-group">
           <label for="signupEmail">Email</label>
-          <input
-            type="email"
-            id="signupEmail"
-            placeholder="you@example.com"
-            autocomplete="email"
-            required
-          />
+          <input type="email" id="signupEmail" placeholder="you@example.com"
+            autocomplete="email" required />
         </div>
-
         <div class="form-group">
           <label for="signupPassword">Password</label>
-          <input
-            type="password"
-            id="signupPassword"
-            placeholder="Min. 6 characters"
-            autocomplete="new-password"
-            required
-            minlength="6"
-          />
+          <input type="password" id="signupPassword" placeholder="Min. 6 characters"
+            autocomplete="new-password" required minlength="6" />
         </div>
-
         <div class="form-group">
           <label for="signupConfirm">Confirm password</label>
-          <input
-            type="password"
-            id="signupConfirm"
-            placeholder="Repeat your password"
-            autocomplete="new-password"
-            required
-          />
+          <input type="password" id="signupConfirm" placeholder="Repeat your password"
+            autocomplete="new-password" required />
         </div>
-
-        <!-- Error and success message areas -->
-        <p class="form-error" id="signupError" role="alert"></p>
+        <p class="form-error"   id="signupError"   role="alert"></p>
         <p class="form-success" id="signupSuccess" role="status"></p>
-
         <button type="submit" class="btn-auth" id="signupBtn">
           <span class="btn-text">Create Account</span>
           <span class="btn-loader" hidden>Creating account…</span>
         </button>
-
         <p class="form-switch">
           Already have an account?
           <button type="button" class="link-btn" onclick="showTab('signin')">Sign in</button>
         </p>
       </form>
-
+ 
     </div>
   </div>
-  <!-- END AUTH SECTION -->
-
-
+ 
+ 
   <!-- ========================================================
        APP SECTION — shown when user IS logged in
-       Managed by: script.js (toggles visibility)
   ======================================================== -->
   <div class="app-wrapper hidden" id="appWrapper">
-
-    <!-- HEADER -->
+ 
     <header class="site-header">
       <a href="#" class="logo">StreamBox</a>
-
       <button class="menu-btn" id="menuBtn" aria-label="Open navigation">☰</button>
-
       <nav class="nav-links" id="navLinks">
         <a href="#hero">Home</a>
         <a href="#movies">Movies</a>
         <a href="#about">About</a>
       </nav>
-
-      <!-- User info + sign out -->
       <div class="header-user">
         <span class="user-email" id="userEmail"></span>
         <button class="btn-signout" id="signOutBtn">Sign Out</button>
       </div>
     </header>
-
+ 
     <main>
-
-      <!-- HERO -->
+ 
       <section id="hero" class="hero">
         <div class="hero-content">
           <p class="eyebrow">Watch anywhere</p>
@@ -157,103 +108,75 @@
           <a href="#movies" class="btn-primary">Browse Movies</a>
         </div>
       </section>
-
-      <!-- MOVIES SECTION -->
+ 
       <section id="movies" class="movies-section">
         <div class="section-heading">
           <h2>Browse movies</h2>
           <p>Search, filter, and click a card to view details.</p>
         </div>
-
         <div class="toolbar">
-          <input
-            type="search"
-            id="search"
-            placeholder="Search movies…"
-            aria-label="Search movies"
-          />
+          <input type="search" id="search" placeholder="Search movies…" aria-label="Search movies" />
         </div>
-
-        <!-- Loading state -->
         <div class="loading-state hidden" id="loadingState">
           <div class="spinner"></div>
           <p>Loading movies…</p>
         </div>
-
-        <!-- Error state -->
         <div class="error-state hidden" id="errorState">
           <p class="error-icon">⚠️</p>
           <p id="errorMessage">Something went wrong. Please check your connection.</p>
           <button class="btn-retry" id="retryBtn">Try Again</button>
         </div>
-
-        <!-- Movie grid -->
         <div class="grid" id="movieGrid"></div>
-
-        <!-- Empty state -->
         <div class="empty-state hidden" id="emptyState">
           <p class="empty-icon">🎬</p>
           <p>No movies found for your search.</p>
           <button class="btn-secondary" id="clearSearchBtn">Clear search</button>
         </div>
-
       </section>
-
-      <!-- ABOUT SECTION -->
+ 
       <section id="about" class="about-section">
         <h2>About StreamBox</h2>
-        <p>
-          StreamBox is a responsive movie browsing app powered by The Movie Database (TMDB)
-          and secured with Supabase Authentication. Built with plain HTML, CSS, and JavaScript.
-        </p>
+        <p>StreamBox is a responsive movie browsing app powered by The Movie Database (TMDB)
+          and secured with Supabase Authentication. Built with plain HTML, CSS, and JavaScript.</p>
       </section>
-
+ 
     </main>
-
+ 
     <footer class="site-footer">
       <p>© 2026 StreamBox · Powered by <a href="https://www.themoviedb.org" target="_blank" rel="noopener">TMDB</a></p>
     </footer>
-
+ 
   </div>
-  <!-- END APP SECTION -->
-
-
+ 
+ 
   <!-- ========================================================
        MOVIE DETAIL MODAL
-       Managed by: script.js
-       Data from: tmdb.js (Cheikh)
   ======================================================== -->
   <dialog class="movie-modal" id="movieModal">
     <button class="close-btn" id="closeModal" aria-label="Close modal">×</button>
-
     <div class="modal-poster" id="modalPoster">
       <div class="modal-poster-loading hidden" id="modalPosterLoading">
         <div class="spinner spinner-sm"></div>
       </div>
       <img class="modal-poster-img hidden" id="modalPosterImg" alt="" />
     </div>
-
     <div class="modal-content">
       <p class="modal-genre" id="modalGenre"></p>
       <h2 id="modalTitle"></h2>
       <p id="modalDescription"></p>
-
       <div class="modal-meta">
         <span id="modalYear"></span>
         <span id="modalRating"></span>
       </div>
     </div>
   </dialog>
-
-
-  <!-- Supabase JS client (CDN) — Ndeye will configure this -->
+ 
+ 
+  <!-- Load order matters: Supabase → auth.js → tmdb.js → script.js -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <!-- App modules -->
-  <script type="module" src="script.js"></script>
   <script src="auth.js"></script>
   <script src="tmdb.js"></script>
   <script src="script.js"></script>
-
+ 
 </body>
 </html>
