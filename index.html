@@ -12,7 +12,6 @@
        AUTH SECTION — shown when user is NOT logged in
   ======================================================== -->
   <div class="auth-wrapper" id="authWrapper">
- 
     <div class="auth-container">
  
       <a href="#" class="auth-logo">StreamBox</a>
@@ -172,9 +171,10 @@
   </dialog>
  
  
-<!-- Load order matters: Supabase CDN first, then your modules -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script type="module" src="script.js"></script>
+  <!-- Supabase CDN must come first, then script.js as a module -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script type="module" src="script.js"></script>
  
 </body>
 </html>
+ 
