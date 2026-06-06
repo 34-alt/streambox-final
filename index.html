@@ -19,8 +19,8 @@
       <p class="auth-tagline">Your movies. Your world.</p>
  
       <div class="auth-tabs">
-        <button class="auth-tab active" id="tabSignIn" onclick="showTab('signin')">Sign In</button>
-        <button class="auth-tab" id="tabSignUp" onclick="showTab('signup')">Sign Up</button>
+        <button class="auth-tab active" id="tabSignIn">Sign In</button>
+        <button class="auth-tab" id="tabSignUp">Sign Up</button>
       </div>
  
       <!-- SIGN IN FORM -->
@@ -42,7 +42,7 @@
         </button>
         <p class="form-switch">
           No account?
-          <button type="button" class="link-btn" onclick="showTab('signup')">Create one</button>
+          <button type="button" class="link-btn" id="switchToSignup">Create one</button>
         </p>
       </form>
  
@@ -71,7 +71,7 @@
         </button>
         <p class="form-switch">
           Already have an account?
-          <button type="button" class="link-btn" onclick="showTab('signin')">Sign in</button>
+          <button type="button" class="link-btn" id="switchToSignin">Sign in</button>
         </p>
       </form>
  

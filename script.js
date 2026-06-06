@@ -1,3 +1,6 @@
+import { fetchPopularMovies, searchMovies, fetchMovieDetails, getPosterUrl } from "./tmdb.js";
+import { signUpUser, signInUser, signOutUser, getCurrentUser, onAuthChange } from "./auth.js";
+
 /* ============================================================
    StreamBox — script.js
    Main orchestrator: Khadija Mbodji
@@ -12,6 +15,11 @@
 
 
 // ---- DOM References ----
+
+document.getElementById("tabSignIn").addEventListener("click", () => showTab("signin"));
+document.getElementById("tabSignUp").addEventListener("click", () => showTab("signup"));
+document.getElementById("switchToSignup").addEventListener("click", () => showTab("signup"));
+document.getElementById("switchToSignin").addEventListener("click", () => showTab("signin"));
 
 // Auth
 const authWrapper   = document.getElementById("authWrapper");
