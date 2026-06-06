@@ -1,42 +1,25 @@
-import { fetchPopularMovies, searchMovies, fetchMovieDetails, getPosterUrl } from "./tmdb.js";
-import { signUpUser, signInUser, signOutUser, getCurrentUser, onAuthChange } from "./auth.js";
-
 /* ============================================================
    StreamBox — script.js
    Main orchestrator: Khadija Mbodji
-
-   This file wires auth (auth.js) and TMDB (tmdb.js) to the UI.
-   It does NOT contain API logic — it only calls functions from
-   auth.js and tmdb.js.
-
-   NOTE: All scripts load as plain <script> tags in index.html.
-   Do NOT add import/export statements here.
    ============================================================ */
+
+import { signUpUser, signInUser, signOutUser, getCurrentUser, onAuthChange } from "./auth.js";
+import { fetchPopularMovies, searchMovies, fetchMovieDetails, getPosterUrl } from "./tmdb.js";
 
 
 // ---- DOM References ----
 
-document.getElementById("tabSignIn").addEventListener("click", () => showTab("signin"));
-document.getElementById("tabSignUp").addEventListener("click", () => showTab("signup"));
-document.getElementById("switchToSignup").addEventListener("click", () => showTab("signup"));
-document.getElementById("switchToSignin").addEventListener("click", () => showTab("signin"));
-
-// Auth
-const authWrapper   = document.getElementById("authWrapper");
-const appWrapper    = document.getElementById("appWrapper");
-
-const signInForm    = document.getElementById("signInForm");
-const signUpForm    = document.getElementById("signUpForm");
-const signinError   = document.getElementById("signinError");
-const signupError   = document.getElementById("signupError");
-const signupSuccess = document.getElementById("signupSuccess");
-const signinBtn     = document.getElementById("signinBtn");
-const signupBtn     = document.getElementById("signupBtn");
-
-const signOutBtn    = document.getElementById("signOutBtn");
-const userEmailEl   = document.getElementById("userEmail");
-
-// Movies
+const authWrapper    = document.getElementById("authWrapper");
+const appWrapper     = document.getElementById("appWrapper");
+const signInForm     = document.getElementById("signInForm");
+const signUpForm     = document.getElementById("signUpForm");
+const signinError    = document.getElementById("signinError");
+const signupError    = document.getElementById("signupError");
+const signupSuccess  = document.getElementById("signupSuccess");
+const signinBtn      = document.getElementById("signinBtn");
+const signupBtn      = document.getElementById("signupBtn");
+const signOutBtn     = document.getElementById("signOutBtn");
+const userEmailEl    = document.getElementById("userEmail");
 const movieGrid      = document.getElementById("movieGrid");
 const searchInput    = document.getElementById("search");
 const loadingState   = document.getElementById("loadingState");
@@ -45,23 +28,19 @@ const errorMessage   = document.getElementById("errorMessage");
 const emptyState     = document.getElementById("emptyState");
 const retryBtn       = document.getElementById("retryBtn");
 const clearSearchBtn = document.getElementById("clearSearchBtn");
-
-// Modal
-const movieModal       = document.getElementById("movieModal");
-const closeModal       = document.getElementById("closeModal");
-const modalPosterImg   = document.getElementById("modalPosterImg");
-const modalGenre       = document.getElementById("modalGenre");
-const modalTitle       = document.getElementById("modalTitle");
+const movieModal     = document.getElementById("movieModal");
+const closeModal     = document.getElementById("closeModal");
+const modalPosterImg = document.getElementById("modalPosterImg");
+const modalGenre     = document.getElementById("modalGenre");
+const modalTitle     = document.getElementById("modalTitle");
 const modalDescription = document.getElementById("modalDescription");
-const modalYear        = document.getElementById("modalYear");
-const modalRating      = document.getElementById("modalRating");
-
-// Header nav
-const menuBtn   = document.getElementById("menuBtn");
-const navLinks  = document.getElementById("navLinks");
+const modalYear      = document.getElementById("modalYear");
+const modalRating    = document.getElementById("modalRating");
+const menuBtn        = document.getElementById("menuBtn");
+const navLinks       = document.getElementById("navLinks");
 
 
-// ---- UI State Helpers ----
+// ---- Auth UI Helpers ----
 
 function showAuth() {
   authWrapper.classList.remove("hidden");
@@ -89,10 +68,6 @@ function showTab(tab) {
     tabSignIn.classList.remove("active");
     tabSignUp.classList.add("active");
   }
-  clearAuthMessages();
-}
-
-function clearAuthMessages() {
   signinError.textContent   = "";
   signupError.textContent   = "";
   signupSuccess.textContent = "";
@@ -111,6 +86,14 @@ function setSignupLoading(loading) {
 }
 
 
+// ---- Tab switching (replaces onclick in HTML) ----
+
+document.getElementById("tabSignIn").addEventListener("click",    () => showTab("signin"));
+document.getElementById("tabSignUp").addEventListener("click",    () => showTab("signup"));
+document.getElementById("switchToSignup").addEventListener("click", () => showTab("signup"));
+document.getElementById("switchToSignin").addEventListener("click", () => showTab("signin"));
+
+
 // ---- Movie UI Helpers ----
 
 function showLoading() {
@@ -124,7 +107,7 @@ function showError(msg) {
   loadingState.classList.add("hidden");
   errorState.classList.remove("hidden");
   emptyState.classList.add("hidden");
-  errorMessage.textContent = msg || "Something went wrong. Please check your connection.";
+  errorMessage.textContent = msg || "Something went wrong.";
 }
 
 function showEmpty() {
@@ -190,13 +173,13 @@ async function loadPopularMovies() {
     const movies = await fetchPopularMovies();
     renderMovies(movies);
   } catch (err) {
-    console.error("Error loading popular movies:", err);
-    showError("Could not load movies. Please check your connection and try again.");
+    console.error("Error loading movies:", err);
+    showError("Could not load movies. Please check your connection.");
   }
 }
 
 
-// ---- Search with debounce ----
+// ---- Search ----
 
 let searchTimeout = null;
 
@@ -222,16 +205,16 @@ searchInput.addEventListener("input", () => {
 });
 
 
-// ---- Movie Detail Modal ----
+// ---- Movie Modal ----
 
 async function openMovieModal(movieId) {
   modalPosterImg.classList.add("hidden");
-  modalPosterImg.src = "";
-  modalGenre.textContent       = "";
-  modalTitle.textContent       = "";
+  modalPosterImg.src       = "";
+  modalGenre.textContent   = "";
+  modalTitle.textContent   = "";
   modalDescription.textContent = "Loading…";
-  modalYear.textContent        = "";
-  modalRating.textContent      = "";
+  modalYear.textContent    = "";
+  modalRating.textContent  = "";
 
   movieModal.showModal();
 
@@ -245,11 +228,7 @@ async function openMovieModal(movieId) {
       modalPosterImg.classList.remove("hidden");
     }
 
-    const genres = movie.genres && movie.genres.length > 0
-      ? movie.genres.map(g => g.name).join(", ")
-      : "";
-
-    modalGenre.textContent       = genres;
+    modalGenre.textContent       = movie.genres?.map(g => g.name).join(", ") || "";
     modalTitle.textContent       = movie.title;
     modalDescription.textContent = movie.overview || "No description available.";
     modalYear.textContent        = movie.release_date ? `📅 ${movie.release_date}` : "";
@@ -277,13 +256,11 @@ movieModal.addEventListener("click", (e) => {
 signOutBtn.addEventListener("click", async () => {
   const { error } = await signOutUser();
   if (error) console.error("Sign out error:", error.message);
-  // onAuthChange listener will call showAuth() automatically
 });
 
 
-// ---- Form Submissions ----
+// ---- Sign In Form ----
 
-// Sign In
 signInForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   signinError.textContent = "";
@@ -307,11 +284,11 @@ signInForm.addEventListener("submit", async (e) => {
   if (error) {
     signinError.textContent = "Incorrect email or password. Please try again.";
   }
-  // On success, onAuthChange triggers showApp()
 });
 
 
-// Sign Up
+// ---- Sign Up Form ----
+
 signUpForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   signupError.textContent   = "";
@@ -353,7 +330,6 @@ signUpForm.addEventListener("submit", async (e) => {
 
 
 // ---- Auth State Listener ----
-// Runs on page load and on every sign-in / sign-out event.
 
 onAuthChange((event, session) => {
   if (session && session.user) {
@@ -365,13 +341,13 @@ onAuthChange((event, session) => {
 });
 
 
-// ---- Header hamburger menu ----
+// ---- Header hamburger ----
 
 menuBtn.addEventListener("click", () => navLinks.classList.toggle("show"));
 navLinks.addEventListener("click", () => navLinks.classList.remove("show"));
 
 
-// ---- Utility buttons ----
+// ---- Retry / Clear search ----
 
 retryBtn.addEventListener("click", () => {
   const query = searchInput.value.trim();
