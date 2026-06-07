@@ -39,6 +39,16 @@ const modalRating    = document.getElementById("modalRating");
 const menuBtn        = document.getElementById("menuBtn");
 const navLinks       = document.getElementById("navLinks");
 
+// ---- Toggle Password Visibility ---- 
+
+document.querySelectorAll(".toggle-password").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const input = document.getElementById(btn.dataset.target);
+    const isHidden = input.type === "password";
+    input.type = isHidden ? "text" : "password";
+    btn.textContent = isHidden ? "🙈" : "👁";
+  });
+});
 
 // ---- Auth UI Helpers ----
 
