@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StreamBox — Stream What You Love</title>
+    <meta
+      name="description"
+      content="StreamBox is your premium destination for movies, TV shows, documentaries and new releases, powered by TMDB."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- ========================================================
+       AUTH SECTION — shown when user is NOT logged in
+  ======================================================== -->
+    <div class="auth-wrapper" id="authWrapper">
+      <div class="auth-bg" id="authBg"></div>
+      <div class="auth-overlay"></div>
+
+      <header class="auth-header">
+        <a href="#" class="auth-logo">Stream<span>Box</span></a>
+      </header>
+
+      <div class="auth-container">
+        <h2 class="auth-title" id="authTitle">Sign In</h2>
+        <p class="auth-tagline">
+          Ready to start streaming? Unlock a world of movies.
+        </p>
+
+        <!-- SIGN IN FORM -->
+        <form class="auth-form" id="signInForm" novalidate>
+          <div class="form-group">
+            <input
+              type="email"
+              id="signinEmail"
+              placeholder="Email address"
+              autocomplete="email"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="signinPassword"
+                placeholder="Password"
+                autocomplete="current-password"
+                required
+              />
+              <button
+                type="button"
+                class="toggle-password"
+                data-target="signinPassword"
+              >
+                👁
+              </button>
+            </div>
+          </div>
+          <p class="form-error" id="signinError" role="alert"></p>
+          <button type="submit" class="btn-auth" id="signinBtn">
+            <span class="btn-text">Get Started</span>
+            <span class="btn-loader" hidden>Signing in…</span>
+          </button>
+          <div class="auth-help">
+            <a href="#" class="forgot-password" id="forgotPasswordBtn"
+              >Forgot password?</a
+            >
+          </div>
+          <p class="form-switch">
+            <span class="switch-text">New to StreamBox?</span>
+            <button type="button" class="link-btn" id="switchToSignup">
+              Sign up now.
+            </button>
+          </p>
+        </form>
+
+        <!-- SIGN UP FORM -->
+        <form class="auth-form hidden" id="signUpForm" novalidate>
+          <div class="form-group">
+            <input
+              type="email"
+              id="signupEmail"
+              placeholder="Email address"
+              autocomplete="email"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="signupPassword"
+                placeholder="Password (Min. 6 characters)"
+                autocomplete="new-password"
+                required
+                minlength="6"
+              />
+              <button
+                type="button"
+                class="toggle-password"
+                data-target="signupPassword"
+              >
+                👁
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="signupConfirm"
+                placeholder="Confirm password"
+                autocomplete="new-password"
+                required
+              />
+              <button
+                type="button"
+                class="toggle-password"
+                data-target="signupConfirm"
+              >
+                👁
+              </button>
+            </div>
+          </div>
+          <p class="form-error" id="signupError" role="alert"></p>
+          <p class="form-success" id="signupSuccess" role="status"></p>
+          <button type="submit" class="btn-auth" id="signupBtn">
+            <span class="btn-text">Create Account</span>
+            <span class="btn-loader" hidden>Creating account…</span>
+          </button>
+          <p class="form-switch">
+            <span class="switch-text">Already have an account?</span>
+            <button type="button" class="link-btn" id="switchToSignin">
+              Sign in now.
+            </button>
+          </p>
+        </form>
+        <!-- PASSWORD RESET FORM -->
+        <form class="auth-form hidden" id="passwordResetForm" novalidate>
+          <div class="form-group">
+            <input
+              type="email"
+              id="resetEmail"
+              placeholder="Email address"
+              autocomplete="email"
+              required
+            />
+          </div>
+          <p class="form-error" id="resetEmailError" role="alert"></p>
+          <p class="form-success" id="resetEmailSuccess" role="status"></p>
+          <button type="submit" class="btn-auth" id="resetEmailBtn">
+            <span class="btn-text">Send Reset Link</span>
+            <span class="btn-loader" hidden>Sending…</span>
+          </button>
+          <p class="auth-switch">
+            Remembered your password?
+            <button type="button" class="link-btn" id="cancelResetBtn">
+              Sign in
+            </button>
+          </p>
+        </form>
+
+        <!-- UPDATE PASSWORD FORM (shown on recovery) -->
+        <form class="auth-form hidden" id="updatePasswordForm" novalidate>
+          <p style="margin-bottom: 1rem; color: #fff;">Please enter your new password.</p>
+          <div class="form-group">
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="newPassword"
+                placeholder="New Password"
+                required
+                minlength="6"
+              />
+              <button type="button" class="toggle-password" data-target="newPassword">
+                👁
+              </button>
+            </div>
+          </div>
+          <p class="form-error" id="newPasswordError" role="alert"></p>
+          <p class="form-success" id="newPasswordSuccess" role="status"></p>
+          <button type="submit" class="btn-auth" id="updatePasswordBtn">
+            <span class="btn-text">Update Password</span>
+            <span class="btn-loader" hidden>Updating…</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ========================================================
+       APP SECTION — shown when user IS logged in
+  ======================================================== -->
+    <div class="app-wrapper hidden" id="appWrapper">
+      <!-- ── HEADER ── -->
+      <header class="site-header" id="siteHeader">
+        <a href="#" class="logo" id="logoBtn">Stream<span>Box</span></a>
+
+        <nav class="nav-links" id="navLinks">
+          <a href="#" class="nav-item active" data-view="home" id="navHome"
+            >Home</a
+          >
+          <a href="#" class="nav-item" data-view="series" id="navSeries"
+            >TV Shows</a
+          >
+          <a href="#" class="nav-item" data-view="films" id="navFilms"
+            >Movies</a
+          >
+          <a href="#" class="nav-item" data-view="documentaires" id="navDocs"
+            >Documentaries</a
+          >
+          <a href="#" class="nav-item" data-view="nouveautes" id="navNew"
+            >New Releases</a
+          >
+        </nav>
+
+        <div class="header-right">
+          <!-- Collapsible search -->
+          <div class="search-bar-wrap" id="searchWrap">
+            <button
+              class="search-icon-btn"
+              id="searchIconBtn"
+              aria-label="Open search"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+            </button>
+            <div class="search-type-toggle" id="searchTypeToggle">
+              <button class="search-type-btn active" id="searchByTitle" data-type="title">Titles</button>
+              <button class="search-type-btn" id="searchByPeople" data-type="people">People</button>
+            </div>
+            <input
+              type="search"
+              id="search"
+              class="search-input"
+              placeholder="Search titles..."
+              aria-label="Search movies or tv shows"
+            />
+          </div>
+
+          <!-- Animated theme toggle (pill switch) -->
+          <button
+            class="theme-toggle"
+            id="themeToggleBtn"
+            aria-label="Toggle light/dark mode"
+          >
+            <span class="theme-toggle__track">
+              <span class="theme-toggle__thumb"></span>
+              <span class="theme-toggle__icon theme-toggle__icon--sun">☀️</span>
+              <span class="theme-toggle__icon theme-toggle__icon--moon"
+                >🌙</span
+              >
+            </span>
+          </button>
+
+          <span class="user-email" id="userEmail"></span>
+          <button class="btn-signout" id="signOutBtn">Sign Out</button>
+          <button class="menu-btn" id="menuBtn" aria-label="Open navigation">
+            ☰
+          </button>
+        </div>
+      </header>
+
+      <main id="mainContent">
+        <!-- ── HERO BANNER ── -->
+        <section class="hero-banner" id="heroBanner">
+          <div class="hero-backdrop" id="heroBackdrop"></div>
+          <div class="hero-gradient"></div>
+          <div class="hero-content" id="heroContent">
+            <p class="hero-badge" id="heroBadge">🔥 Trending Today</p>
+            <h1 class="hero-title" id="heroTitle">Loading…</h1>
+            <p class="hero-overview" id="heroOverview"></p>
+            <div class="hero-actions">
+              <button class="btn btn-primary" id="heroPlayBtn">
+                <span class="icon">▶</span> Play
+              </button>
+              <button class="btn btn-secondary" id="heroInfoBtn">
+                <span class="icon">ℹ</span> More Info
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── MOVIES SECTION (SPA views) ── -->
+        <section class="movies-section" id="movies">
+          <!-- States -->
+          <div class="loading-state hidden" id="loadingState">
+            <div class="spinner"></div>
+            <p>Loading...</p>
+          </div>
+          <div class="error-state hidden" id="errorState">
+            <div class="error-icon">⚠️</div>
+            <p id="errorMsg">An error occurred.</p>
+            <button class="btn-retry" id="retryBtn">Retry</button>
+          </div>
+          <div class="empty-state hidden" id="emptyState">
+            <div class="empty-icon">🔍</div>
+            <p>No results found.</p>
+            <button class="btn-secondary" id="clearSearchBtn">
+              Clear Search
+            </button>
+          </div>
+
+          <!-- HOME VIEW — carousels -->
+          <div id="homeView">
+            <div class="carousel-container">
+              <h3 class="carousel-title">Trending This Week</h3>
+              <div class="carousel-wrapper">
+                <button class="scroll-btn left" data-target="trendingGrid">
+                  ‹
+                </button>
+                <div class="movie-row" id="trendingGrid"></div>
+                <button class="scroll-btn right" data-target="trendingGrid">
+                  ›
+                </button>
+              </div>
+            </div>
+            <div class="carousel-container">
+              <h3 class="carousel-title">Popular Movies</h3>
+              <div class="carousel-wrapper">
+                <button class="scroll-btn left" data-target="popularGrid">
+                  ‹
+                </button>
+                <div class="movie-row" id="popularGrid"></div>
+                <button class="scroll-btn right" data-target="popularGrid">
+                  ›
+                </button>
+              </div>
+            </div>
+            <div class="carousel-container">
+              <h3 class="carousel-title">Top Rated</h3>
+              <div class="carousel-wrapper">
+                <button class="scroll-btn left" data-target="topRatedGrid">
+                  ‹
+                </button>
+                <div class="movie-row" id="topRatedGrid"></div>
+                <button class="scroll-btn right" data-target="topRatedGrid">
+                  ›
+                </button>
+              </div>
+            </div>
+            <div class="carousel-container">
+              <h3 class="carousel-title">Action & Adventure</h3>
+              <div class="carousel-wrapper">
+                <button class="scroll-btn left" data-target="actionGrid">
+                  ‹
+                </button>
+                <div class="movie-row" id="actionGrid"></div>
+                <button class="scroll-btn right" data-target="actionGrid">
+                  ›
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- SÉRIES VIEW -->
+          <div id="seriesView" class="hidden">
+            <div class="carousel-container">
+              <h3 class="carousel-title">Popular TV Shows</h3>
+              <div class="carousel-wrapper">
+                <button class="scroll-btn left" data-target="seriesGrid">
+                  ‹
+                </button>
+                <div class="movie-row" id="seriesGrid"></div>
+                <button class="scroll-btn right" data-target="seriesGrid">
+                  ›
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- FILMS VIEW -->
+          <div id="filmsView" class="hidden">
+            <div class="carousel-container">
+              <h3 class="carousel-title">Movies</h3>
+              <div class="carousel-wrapper">
+                <button class="scroll-btn left" data-target="filmsGrid">
+                  ‹
+                </button>
+                <div class="movie-row" id="filmsGrid"></div>
+                <button class="scroll-btn right" data-target="filmsGrid">
+                  ›
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- DOCS VIEW -->
+          <div id="documentairesView" class="hidden">
+            <div class="carousel-container">
+              <h3 class="carousel-title">Documentaries</h3>
+              <div class="carousel-wrapper">
+                <button class="scroll-btn left" data-target="docsGrid">
+                  ‹
+                </button>
+                <div class="movie-row" id="docsGrid"></div>
+                <button class="scroll-btn right" data-target="docsGrid">
+                  ›
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- NEW RELEASES VIEW -->
+          <div id="nouveautesView" class="hidden">
+            <div class="carousel-container">
+              <h3 class="carousel-title">New Releases</h3>
+              <div class="carousel-wrapper">
+                <button class="scroll-btn left" data-target="newGrid">‹</button>
+                <div class="movie-row" id="newGrid"></div>
+                <button class="scroll-btn right" data-target="newGrid">
+                  ›
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- SEARCH VIEW -->
+          <div id="searchView" class="hidden">
+            <h3 class="carousel-title">Search Results</h3>
+            <div class="grid" id="movieGrid"></div>
+            <div class="load-more-container hidden" id="loadMoreContainer">
+              <button id="loadMoreBtn" class="btn-load-more">Load More</button>
+            </div>
+          </div>
+
+          <!-- LEGAL / ABOUT VIEW -->
+          <div id="legalView" class="hidden">
+            <div style="padding: 2rem 5%; color: var(--text); max-width: 800px; margin: 0 auto; line-height: 1.6;">
+              <h2 style="font-size: 2rem; margin-bottom: 1.5rem; color: var(--brand);">About & Legal</h2>
+              
+              <h3 id="who-are-we" class="anchor-heading" style="font-size: 1.3rem; margin-top: 2rem; margin-bottom: 0.5rem; scroll-margin-top: 80px;">Who are we?</h3>
+              <p>StreamBox is a modern web platform focusing on providing a seamless, beautiful frontend experience for movie and TV show exploration. Our mission is to connect you with the content you love.</p>
+
+              <h3 id="faq" class="anchor-heading" style="font-size: 1.3rem; margin-top: 2rem; margin-bottom: 0.5rem; scroll-margin-top: 80px;">FAQ</h3>
+              <p><strong>Is this service free?</strong><br>Yes, our platform is entirely free to browse.</p>
+              <p><strong>Can I watch movies here?</strong><br>No, we provide detailed metadata and exploration tools, but do not host or stream actual video content directly.</p>
+
+              <h3 id="contact" class="anchor-heading" style="font-size: 1.3rem; margin-top: 2rem; margin-bottom: 0.5rem; scroll-margin-top: 80px;">Contact</h3>
+              <p>For any inquiries regarding our platform, please reach out to our support team.</p>
+
+              <hr style="margin: 3rem 0; border: 0; border-top: 1px solid var(--border);">
+
+              <h3 id="terms" class="anchor-heading" style="font-size: 1.3rem; margin-top: 2rem; margin-bottom: 0.5rem; scroll-margin-top: 80px;">Terms of Use (CGU)</h3>
+              <p>Welcome to StreamBox. By accessing this platform, you agree to abide by our terms. Any misuse of the platform is strictly prohibited.</p>
+              
+              <h3 id="privacy" class="anchor-heading" style="font-size: 1.3rem; margin-top: 2rem; margin-bottom: 0.5rem; scroll-margin-top: 80px;">Privacy Policy</h3>
+              <p>We respect your privacy. StreamBox uses secure authentication mechanisms. We do not store your personal data beyond what is strictly necessary to log you in. We do not sell or share your data with third parties.</p>
+              
+              <h3 id="legal-notice" class="anchor-heading" style="font-size: 1.3rem; margin-top: 2rem; margin-bottom: 0.5rem; scroll-margin-top: 80px;">Legal Notice</h3>
+              <p>StreamBox is a dedicated movie exploration platform. Movie and TV show metadata and images are provided by the TMDB API. StreamBox is not endorsed or certified by TMDB.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- ── FOOTER ── -->
+      <footer class="site-footer">
+        <div class="footer-inner">
+          <div class="footer-brand">
+            <span class="footer-logo">Stream<span>Box</span></span>
+            <p>
+              A premium streaming experience,<br />powered by TMDB &amp;
+              Supabase.
+            </p>
+          </div>
+          <div class="footer-links">
+            <h4>About</h4>
+            <ul>
+              <li><a href="#" class="nav-item" data-view="legal" data-target="who-are-we">Who are we?</a></li>
+              <li><a href="#" class="nav-item" data-view="legal" data-target="faq">FAQ</a></li>
+              <li><a href="#" class="nav-item" data-view="legal" data-target="contact">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-links">
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="#" class="nav-item" data-view="legal" data-target="legal-notice">Legal Notice</a></li>
+              <li><a href="#" class="nav-item" data-view="legal" data-target="privacy">Privacy Policy</a></li>
+              <li><a href="#" class="nav-item" data-view="legal" data-target="terms">Terms of Use</a></li>
+            </ul>
+          </div>
+          <div class="footer-links">
+            <h4>Follow Us</h4>
+            <ul>
+              <li><a href="#">Instagram</a></li>
+              <li><a href="#">Twitter / X</a></li>
+              <li><a href="#">TikTok</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>
+            © 2026 StreamBox · Data provided by
+            <a href="https://www.themoviedb.org" target="_blank" rel="noopener"
+              >TMDB</a
+            >
+          </p>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Movie Detail Modal -->
+    <dialog class="movie-modal" id="movieModal">
+      <button class="close-btn" id="closeModal" aria-label="Close">×</button>
+      <div class="modal-poster">
+        <img class="modal-poster-img hidden" id="modalPosterImg" alt="" />
+      </div>
+      <div class="modal-content">
+        <p class="modal-genre" id="modalGenre"></p>
+        <h2 id="modalTitle"></h2>
+        <p id="modalDescription">Loading…</p>
+        <div class="modal-meta">
+          <span id="modalYear"></span>
+          <span id="modalRating"></span>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Supabase CDN must come first, then script.js as a module -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
+
