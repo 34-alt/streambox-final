@@ -1197,3 +1197,17 @@ img {
   }
 }
 
+@media (max-width: 480px) {
+  .card {
+    flex: 0 0 140px;
+  }
+
+  .carousel-track {
+    gap: 0.5rem;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 0.5rem;
+  }
+}
