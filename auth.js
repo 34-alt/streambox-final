@@ -7,9 +7,9 @@
    for auth logic, keep everything here.
    ============================================================ */
 
-const SUPABASE_URL = "YOUR_SUPABASE_URL" ;
+const SUPABASE_URL =  "https://zebnqkacqyxeorpogzdv.supabase.co";
 const SUPABASE_ANON_KEY =
-  "YOUR_SUPABASE_ANON_KEY";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplYm5xa2FjcXl4ZW9ycG9nemR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1OTQ3MzksImV4cCI6MjA5NjE3MDczOX0.0KQIo-yRpTDvYJGTeFcsxj4Im0EzgFdblq6ip3-QehI";
 export const supabaseClient = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_ANON_KEY,

@@ -1,7 +1,8 @@
  // StreamBox - tmdb.js
 // TMDB API Integration: Cheikh Ahmed Tidiane Dione
 
-const TMDB_API_KEY = "YOUR_TMDB_API_KEY";
+const TMDB_API_KEY = "3d321dc8ecb16aa80e608c772bb9fbb1";
+
 const TMDB_BASE_URL = "https://api.themoviedb.org/3";
 const TMDB_IMAGE_BASE = "https://image.tmdb.org/t/p/w500";
 const TMDB_BACKDROP_BASE = "https://image.tmdb.org/t/p/original";
