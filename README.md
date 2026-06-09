@@ -63,7 +63,20 @@ A responsive movie browsing web app upgraded with real API data and authenticati
 
 ## Screenshots
 
-> *(Add screenshots here after deployment)*
+### Home Page
+<img width="3840" height="2160" alt="Screenshot 2026-06-08 185459" src="https://github.com/user-attachments/assets/b9fac25a-2d9c-40cb-960d-c6972aa32c4b" />
+
+### Authentication Page
+<img width="3840" height="2160" alt="Screenshot 2026-06-08 185330" src="https://github.com/user-attachments/assets/d75306af-dbaf-49b4-bdd2-299f865f8b6e" />
+
+### Sign Up Page
+<img width="3840" height="2160" alt="Screenshot 2026-06-08 185350" src="https://github.com/user-attachments/assets/89a14cfa-eb06-48b7-a41e-bfa6381bebef" />
+
+### Movie Details Modal
+<img width="3840" height="2160" alt="Screenshot 2026-06-08 185809" src="https://github.com/user-attachments/assets/bfb24d00-a884-4002-8591-4ae536b909a9" />
+
+### Movie List
+<img width="3840" height="2160" alt="Screenshot 2026-06-08 185527" src="https://github.com/user-attachments/assets/7ed7bfaf-9e98-416a-9e7e-a5233b5593c4" />
 
 ## Known Limitations
 
@@ -78,3 +91,6 @@ A responsive movie browsing web app upgraded with real API data and authenticati
 - Watchlist feature (save movies per user in Supabase database)
 - Move API calls to a backend to protect secrets
 - Progressive Web App (PWA) support
+
+## Deployment
+Live website: https://streambox-app.netlify.app/
